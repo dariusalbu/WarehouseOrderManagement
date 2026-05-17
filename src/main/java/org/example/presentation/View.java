@@ -1,6 +1,5 @@
 package org.example.presentation;
 
-import javax.smartcardio.Card;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -10,11 +9,18 @@ public class View extends JFrame {
     private JButton clientButton;
     private JButton productButton;
     private JButton orderButton;
-    private JButton button4;
     private JPanel mainWindowJPanel;
     private JScrollPane mainJScrollPane;
-    private JButton button1;
-    private JButton button2;
+    private JScrollPane ClientJScrollPane;
+    private JScrollPane ProductJScrollPane;
+    private JScrollPane OrderJScrollPane;
+    private JTable table1;
+    private JButton deleteClientButton;
+    private JButton editClientButton;
+    private JButton addClientButton;
+    private JButton addProductButton;
+    private JButton editProductButton;
+    private JButton deleteProductButton;
 
     private final CardLayout cardLayout;
 
