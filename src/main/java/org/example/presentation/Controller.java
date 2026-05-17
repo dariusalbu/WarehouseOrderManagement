@@ -8,20 +8,52 @@ public class Controller {
     public Controller() {
         this.view = new View();
 
-        this.view.addClientButtonListener(e -> handleClient());
-        this.view.addProductButtonListener(e -> handleProduct());
-        this.view.addOrderButtonListener(e -> handleOrder());
+        this.view.clientButtonListener(e -> showClientWindow());
+        this.view.productButtonListener(e -> showProductWindow());
+        this.view.orderButtonListener(e -> showOrderWindow());
+        this.view.addClientButtonListener(e -> showAddClientWindow());
+        this.view.updateClientButtonListener(e -> showUpdateClientWindow());
+        this.view.completeUpdateClientButtonListener(e -> showViewClientWindow());
+        this.view.completeAddClientButtonListener(e -> showViewClientWindow());
+        this.view.addProductButtonListener(e -> showAddProductWindow());
+        this.view.updateProductButtonListener(e -> showUpdateProductWindow());
+        this.view.completeAddProductButtonListener(e -> showViewProductWindow());
+        this.view.completeUpdateProductListener(e -> showViewProductWindow());
     }
 
-    private void handleClient() {
-        this.view.changeMainWindowCard("ClientCard");
+    private void showClientWindow() {
+        this.view.changeMainWindowCard("clientCard");
     }
 
-    private void handleProduct() {
-        this.view.changeMainWindowCard("ProductCard");
+    private void showProductWindow() {
+        this.view.changeMainWindowCard("productCard");
     }
 
-    private void handleOrder() {
-        this.view.changeMainWindowCard("OrderCard");
+    private void showOrderWindow() {
+        this.view.changeMainWindowCard("orderCard");
+    }
+
+    private void showAddClientWindow() {
+        this.view.changeClientWindowCard("addClientCard");
+    }
+
+    private void showUpdateClientWindow() {
+        this.view.changeClientWindowCard("updateClientCard");
+    }
+
+    private void showViewClientWindow() {
+        this.view.changeClientWindowCard("viewClientCard");
+    }
+
+    private void showAddProductWindow() {
+        this.view.changeProductWindowCard("addProductCard");
+    }
+
+    private void showUpdateProductWindow() {
+        this.view.changeProductWindowCard("updateProductCard");
+    }
+
+    private void showViewProductWindow() {
+        this.view.changeProductWindowCard("viewProductCard");
     }
 }
