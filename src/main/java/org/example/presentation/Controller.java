@@ -1,13 +1,22 @@
 package org.example.presentation;
 
+import org.example.bll.ClientBLL;
+import org.example.bll.ProductBLL;
 import org.example.model.Client;
+import org.example.model.Product;
 
 import javax.swing.*;
+import java.sql.SQLException;
 
 public class Controller {
     private final View view;
 
+    private final ClientBLL clientBLL;
+    private final ProductBLL productBLL;
+
     public Controller() {
+        this.clientBLL = new ClientBLL();
+        this.productBLL = new ProductBLL();
         this.view = new View();
 
         this.view.clientButtonListener(e -> clientWindow());
@@ -44,8 +53,25 @@ public class Controller {
     }
 
     void completeAddClient() {
+        try {
+            this.view.changeClientWindowCard("viewClientCard");
 
-        this.view.changeClientWindowCard("viewClientCard");
+            String name = this.view.getAddClientNameTextField().getText();
+            String email = this.view.getAddClientEmailTextField().getText();
+            int age = Integer.parseInt(this.view.getAddClientAgeTextField().getText());
+
+            Client client = new Client(name, email, age);
+
+            clientBLL.insert(client);
+
+            this.view.getAddClientNameTextField().setText("");
+            this.view.getAddClientEmailTextField().setText("");
+            this.view.getAddClientAgeTextField().setText("");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a number", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void completeUpdateClient() {
@@ -63,9 +89,25 @@ public class Controller {
     }
 
     void completeAddProduct() {
+        try {
+            this.view.changeProductWindowCard("viewProductCard");
 
+            String name = this.view.getAddProductNameTextField().getText();
+            Double price = Double.valueOf(this.view.getAddProductPriceTextField().getText());
+            int currentStock = Integer.parseInt(this.view.getAddProductStockTextField().getText());
 
-        this.view.changeProductWindowCard("viewProductCard");
+            Product product = new Product(name, price, currentStock);
+
+            productBLL.insert(product);
+
+            this.view.getAddProductNameTextField().setText("");
+            this.view.getAddProductPriceTextField().setText("");
+            this.view.getAddProductStockTextField().setText("");
+        } catch (NumberFormatException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void completeUpdateProduct() {

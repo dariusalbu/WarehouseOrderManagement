@@ -17,11 +17,11 @@ public class View extends JFrame {
     private JButton deleteProductButton;
     private JButton updateProductButton;
     private JButton addProductButton;
-    private JTable table2;
+    private JTable productTable;
     private JButton deleteClientButton;
     private JButton updateClientButton;
     private JButton addClientButton;
-    private JTable table1;
+    private JTable clientTable;
     private JButton completeAddClientButton;
     private JTextField addClientNameTextField;
     private JTextField addClientEmailTextField;
@@ -143,6 +143,8 @@ public class View extends JFrame {
     public JTextField getAddProductStockTextField() {
         return addProductStockTextField;
     }
+
+
 
     public JTextField getUpdateProductNameTextField() {
         return updateProductNameTextField;

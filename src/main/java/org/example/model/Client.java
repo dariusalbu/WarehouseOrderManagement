@@ -5,4 +5,10 @@ public class Client {
     private String name;
     private String email;
     private int age;
+
+    public Client(String name, String email, int age) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
+    }
 }

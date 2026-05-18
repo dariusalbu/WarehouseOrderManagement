@@ -103,12 +103,71 @@ public class AbstractDAO<T> {
     }
 
     public T insert(T t) {
-        // TODO:
+        Connection connection;
+        PreparedStatement statement;
+        ResultSet resultSet;
+
+        String query = getInsertQuery();
+
+        try {
+            connection = ConnectionFactory.getConnection();
+            statement = connection.prepareStatement(query);
+
+            int index = 1;
+            for (Field field : type.getDeclaredFields()) {
+                if (field.getName().equalsIgnoreCase("id")) {
+                    continue;
+                }
+                field.setAccessible(true);
+                statement.setObject(index++, field.get(t));
+            }
+
+            statement.execute();
+
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                Field idField = type.getDeclaredField("id");
+                idField.setAccessible(true);
+                idField.set(t, id);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.WARNING, type.getName() + "DAO:insert" + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            ConnectionFactory.close((ResultSet) null);
+            ConnectionFactory.close((java.sql.Statement) null);
+            ConnectionFactory.close((Connection) null);
+        }
+
         return t;
     }
 
+    private String getInsertQuery() {
+        String tableName = type.getSimpleName().toLowerCase();
+
+        StringBuilder columns = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+
+        for (Field field : type.getDeclaredFields()) {
+            if (field.getName().equalsIgnoreCase("id")) {
+                continue;
+            }
+            if (!columns.isEmpty()) {
+                columns.append(", ");
+                values.append(", ");
+            }
+
+            columns.append(field.getName());
+            values.append("?");
+        }
+
+        return "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + values + ")";
+    }
+
     public T update(T t) {
-        // TODO:
+
+
         return t;
     }
 }
