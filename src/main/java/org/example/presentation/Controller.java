@@ -1,5 +1,7 @@
 package org.example.presentation;
 
+import org.example.model.Client;
+
 import javax.swing.*;
 
 public class Controller {
@@ -13,12 +15,12 @@ public class Controller {
         this.view.orderButtonListener(e -> orderWindow());
         this.view.addClientButtonListener(e -> addClientWindow());
         this.view.updateClientButtonListener(e -> updateClientWindow());
-        this.view.completeUpdateClientButtonListener(e -> viewClientWindow());
-        this.view.completeAddClientButtonListener(e -> viewClientWindow());
+        this.view.completeAddClientButtonListener(e -> completeAddClient());
+        this.view.completeUpdateClientButtonListener(e -> completeUpdateClient());
         this.view.addProductButtonListener(e -> addProductWindow());
         this.view.updateProductButtonListener(e -> updateProductWindow());
-        this.view.completeAddProductButtonListener(e -> viewProductWindow());
-        this.view.completeUpdateProductListener(e -> viewProductWindow());
+        this.view.completeAddProductButtonListener(e -> completeAddProduct());
+        this.view.completeUpdateProductListener(e -> completeUpdateProduct());
     }
 
     private void clientWindow() {
@@ -35,15 +37,20 @@ public class Controller {
 
     private void addClientWindow() {
         this.view.changeClientWindowCard("addClientCard");
-
-
     }
 
     private void updateClientWindow() {
         this.view.changeClientWindowCard("updateClientCard");
     }
 
-    private void viewClientWindow() {
+    void completeAddClient() {
+
+        this.view.changeClientWindowCard("viewClientCard");
+    }
+
+    void completeUpdateClient() {
+
+
         this.view.changeClientWindowCard("viewClientCard");
     }
 
@@ -55,7 +62,15 @@ public class Controller {
         this.view.changeProductWindowCard("updateProductCard");
     }
 
-    private void viewProductWindow() {
+    void completeAddProduct() {
+
+
+        this.view.changeProductWindowCard("viewProductCard");
+    }
+
+    void completeUpdateProduct() {
+
+
         this.view.changeProductWindowCard("viewProductCard");
     }
 }

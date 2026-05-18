@@ -119,4 +119,52 @@ public class View extends JFrame {
     public void changeProductWindowCard(String cardName) {
         productCardLayout.show(productWindowJPanel, cardName);
     }
+
+    public JTextField getAddClientNameTextField() {
+        return addClientNameTextField;
+    }
+
+    public JTextField getAddClientEmailTextField() {
+        return addClientEmailTextField;
+    }
+
+    public JTextField getAddClientAgeTextField() {
+        return addClientAgeTextField;
+    }
+
+    public JTextField getAddProductNameTextField() {
+        return addProductNameTextField;
+    }
+
+    public JTextField getAddProductPriceTextField() {
+        return addProductPriceTextField;
+    }
+
+    public JTextField getAddProductStockTextField() {
+        return addProductStockTextField;
+    }
+
+    public JTextField getUpdateProductNameTextField() {
+        return updateProductNameTextField;
+    }
+
+    public JTextField getUpdateProductPriceTextField() {
+        return updateProductPriceTextField;
+    }
+
+    public JTextField getUpdateProductStockTextField() {
+        return updateProductStockTextField;
+    }
+
+    public JTextField getUpdateClientNameTextField() {
+        return updateClientNameTextField;
+    }
+
+    public JTextField getUpdateClientEmailTextField() {
+        return updateClientEmailTextField;
+    }
+
+    public JTextField getUpdateClientAgeTextField() {
+        return updateClientAgeTextField;
+    }
 }
