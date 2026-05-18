@@ -252,7 +252,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="85d3b" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+                                              <component id="85d3b" class="javax.swing.JTextField" binding="addClientNameTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -298,7 +298,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="76eaf" class="javax.swing.JTextField" binding="textField2" default-binding="true">
+                                              <component id="76eaf" class="javax.swing.JTextField" binding="addClientEmailTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -344,7 +344,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="f72a5" class="javax.swing.JTextField" binding="textField3" default-binding="true">
+                                              <component id="f72a5" class="javax.swing.JTextField" binding="addClientAgeTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -435,7 +435,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="b4f9" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="b4f9" class="javax.swing.JTextField" binding="updateClientNameTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -481,7 +481,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="262f5" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="262f5" class="javax.swing.JTextField" binding="updateClientEmailTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -527,7 +527,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="b30cd" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="b30cd" class="javax.swing.JTextField" binding="updateClientAgeTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -728,7 +728,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="b07da" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="b07da" class="javax.swing.JTextField" binding="addProductNameTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -774,7 +774,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="14d64" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="14d64" class="javax.swing.JTextField" binding="addProductPriceTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -820,7 +820,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="dde2d" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="dde2d" class="javax.swing.JTextField" binding="addProductStockTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -911,7 +911,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="2226c" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="2226c" class="javax.swing.JTextField" binding="updateProductNameTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -957,7 +957,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="f643b" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="f643b" class="javax.swing.JTextField" binding="updateProductPriceTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>
@@ -1003,7 +1003,7 @@
                                             <properties/>
                                             <border type="none"/>
                                             <children>
-                                              <component id="74338" class="javax.swing.JTextField" default-binding="true">
+                                              <component id="74338" class="javax.swing.JTextField" binding="updateProductStockTextField">
                                                 <constraints>
                                                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                                                     <preferred-size width="150" height="-1"/>

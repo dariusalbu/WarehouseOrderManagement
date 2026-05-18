@@ -23,9 +23,9 @@ public class View extends JFrame {
     private JButton addClientButton;
     private JTable table1;
     private JButton completeAddClientButton;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JTextField addClientNameTextField;
+    private JTextField addClientEmailTextField;
+    private JTextField addClientAgeTextField;
     private JScrollPane addClientJScrollPane;
     private JScrollPane updateClientJScrollPane;
     private JScrollPane viewClientJScrollPane;
@@ -37,6 +37,15 @@ public class View extends JFrame {
     private JButton completeUpdateClientButton;
     private JButton completeUpdateProductButton;
     private JButton completeAddProductButton;
+    private JTextField addProductNameTextField;
+    private JTextField addProductPriceTextField;
+    private JTextField addProductStockTextField;
+    private JTextField updateProductNameTextField;
+    private JTextField updateProductPriceTextField;
+    private JTextField updateProductStockTextField;
+    private JTextField updateClientNameTextField;
+    private JTextField updateClientEmailTextField;
+    private JTextField updateClientAgeTextField;
 
     private final CardLayout mainCardLayout;
     private final CardLayout clientCardLayout;
