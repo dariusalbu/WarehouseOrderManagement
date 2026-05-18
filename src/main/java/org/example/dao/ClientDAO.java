@@ -1,4 +1,6 @@
 package org.example.dao;
 
-public class ClientDAO {
+import org.example.model.Client;
+
+public class ClientDAO extends AbstractDAO<Client> {
 }
