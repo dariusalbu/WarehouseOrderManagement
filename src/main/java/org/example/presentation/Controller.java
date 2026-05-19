@@ -38,38 +38,51 @@ public class Controller {
 
     }
 
-    private void clientWindow() {
+    public void clientWindow() {
         refreshClientTable();
         this.view.changeMainWindowCard("clientCard");
     }
 
-    private void productWindow() {
+    public void productWindow() {
         refreshProductTable();
         this.view.changeMainWindowCard("productCard");
     }
 
-    private void orderWindow() {
+    public void orderWindow() {
         this.view.changeMainWindowCard("orderCard");
     }
 
-    private void addClientWindow() {
+    public void addClientWindow() {
         this.view.changeClientWindowCard("addClientCard");
     }
 
-    private void updateClientWindow() {
+    public void updateClientWindow() {
         this.view.changeClientWindowCard("updateClientCard");
     }
 
-    void completeAddClient() {
+    public Client getClientData(String name, String email, int age) throws Exception {
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Please enter your name");
+        }
+        if (email.isEmpty()) {
+            throw new IllegalArgumentException("Please enter your email");
+        }
+        if (age < 0) {
+            throw new IllegalArgumentException("Please enter a valid age");
+        }
+
+        return new Client(name, email, age);
+    }
+
+    public void completeAddClient() {
         try {
+            Client client = getClientData(
+                    this.view.getAddClientNameTextField().getText(),
+                    this.view.getAddClientEmailTextField().getText(),
+                    Integer.parseInt(this.view.getAddClientAgeTextField().getText())
+            );
+
             this.view.changeClientWindowCard("viewClientCard");
-
-            String name = this.view.getAddClientNameTextField().getText();
-            String email = this.view.getAddClientEmailTextField().getText();
-            int age = Integer.parseInt(this.view.getAddClientAgeTextField().getText());
-
-            Client client = new Client(name, email, age);
-
             clientBLL.insert(client);
             refreshClientTable();
 
@@ -77,46 +90,64 @@ public class Controller {
             this.view.getAddClientEmailTextField().setText("");
             this.view.getAddClientAgeTextField().setText("");
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter a number", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    void completeUpdateClient() {
+    public void completeUpdateClient() {
 
 
         this.view.changeClientWindowCard("viewClientCard");
     }
 
-    private void addProductWindow() {
+    public void addProductWindow() {
         this.view.changeProductWindowCard("addProductCard");
     }
 
-    private void updateProductWindow() {
+    public void updateProductWindow() {
         this.view.changeProductWindowCard("updateProductCard");
     }
 
-    void completeAddProduct() {
+    public Product getProductData(String name, double price, int stock) throws Exception {
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Please enter your name");
+        }
+        if (price < 0) {
+            throw new IllegalArgumentException("Please enter a valid price");
+        }
+        if (stock < 0) {
+            throw new IllegalArgumentException("Please enter a valid stock");
+        }
+
+        return new Product(name, price, stock);
+    }
+
+    public void completeAddProduct() {
         try {
+            Product  product = getProductData(
+                    this.view.getAddProductNameTextField().getText(),
+                    Double.parseDouble(this.view.getAddProductPriceTextField().getText()),
+                    Integer.parseInt(this.view.getAddProductStockTextField().getText())
+            );
+
             this.view.changeProductWindowCard("viewProductCard");
-
-            String name = this.view.getAddProductNameTextField().getText();
-            Double price = Double.valueOf(this.view.getAddProductPriceTextField().getText());
-            int currentStock = Integer.parseInt(this.view.getAddProductStockTextField().getText());
-
-            Product product = new Product(name, price, currentStock);
-
             productBLL.insert(product);
             refreshProductTable();
 
             this.view.getAddProductNameTextField().setText("");
             this.view.getAddProductPriceTextField().setText("");
             this.view.getAddProductStockTextField().setText("");
-        }catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter a number", "Error", JOptionPane.ERROR_MESSAGE);
+        }  catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
