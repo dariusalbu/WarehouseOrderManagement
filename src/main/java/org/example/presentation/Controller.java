@@ -6,7 +6,10 @@ import org.example.model.Client;
 import org.example.model.Product;
 
 import javax.swing.*;
-import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Vector;
 
 public class Controller {
     private final View view;
@@ -18,6 +21,8 @@ public class Controller {
         this.clientBLL = new ClientBLL();
         this.productBLL = new ProductBLL();
         this.view = new View();
+        refreshClientTable();
+        refreshProductTable();
 
         this.view.clientButtonListener(e -> clientWindow());
         this.view.productButtonListener(e -> productWindow());
@@ -30,13 +35,16 @@ public class Controller {
         this.view.updateProductButtonListener(e -> updateProductWindow());
         this.view.completeAddProductButtonListener(e -> completeAddProduct());
         this.view.completeUpdateProductListener(e -> completeUpdateProduct());
+
     }
 
     private void clientWindow() {
+        refreshClientTable();
         this.view.changeMainWindowCard("clientCard");
     }
 
     private void productWindow() {
+        refreshProductTable();
         this.view.changeMainWindowCard("productCard");
     }
 
@@ -63,6 +71,7 @@ public class Controller {
             Client client = new Client(name, email, age);
 
             clientBLL.insert(client);
+            refreshClientTable();
 
             this.view.getAddClientNameTextField().setText("");
             this.view.getAddClientEmailTextField().setText("");
@@ -99,12 +108,13 @@ public class Controller {
             Product product = new Product(name, price, currentStock);
 
             productBLL.insert(product);
+            refreshProductTable();
 
             this.view.getAddProductNameTextField().setText("");
             this.view.getAddProductPriceTextField().setText("");
             this.view.getAddProductStockTextField().setText("");
-        } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
+        }catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a number", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,5 +124,53 @@ public class Controller {
 
 
         this.view.changeProductWindowCard("viewProductCard");
+    }
+
+    public static void populateTable(JTable table, List<?> objects) {
+        if (objects == null || objects.isEmpty()) {
+            table.setModel(new DefaultTableModel());
+            return;
+        }
+
+        Class<?> type = objects.get(0).getClass();
+        Field[] fields = type.getDeclaredFields();
+
+        Vector<String> columnNames = new Vector<>();
+        for (Field field : fields) {
+            columnNames.add(field.getName());
+        }
+
+        Vector<Vector<Object>> data = new Vector<>();
+        for (Object object : objects) {
+            Vector<Object> row = new Vector<>();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                try {
+                    row.add(field.get(object));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            data.add(row);
+        }
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        table.setModel(model);
+    }
+
+    public void refreshClientTable() {
+        List<Client> clients = clientBLL.findAll();
+        populateTable(this.view.getClientTable(), clients);
+    }
+
+    public void refreshProductTable() {
+        List<Product> products = productBLL.findAll();
+        populateTable(this.view.getProductTable(), products);
     }
 }

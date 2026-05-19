@@ -3,6 +3,7 @@ package org.example.dao;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,18 +27,35 @@ public class AbstractDAO<T> {
     }
 
     private String createSelectQuery(String field) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT ");
-        sb.append(" * ");
-        sb.append(" FROM ");
-        sb.append(type.getSimpleName());
-        sb.append(" WHERE " + field + " =?");
-        return sb.toString();
+        return "SELECT " +
+                " * " +
+                " FROM " +
+                type.getSimpleName() +
+                " WHERE " + field + " =?";
     }
 
     public List<T> findAll() {
-        // TODO:
-        return null;
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<T> results = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + type.getSimpleName().toLowerCase();
+
+        try {
+            connection = ConnectionFactory.getConnection();
+            statement = connection.prepareStatement(selectQuery);
+            resultSet = statement.executeQuery();
+
+            results = createObjects(resultSet);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            ConnectionFactory.close(resultSet);
+            ConnectionFactory.close(statement);
+            ConnectionFactory.close(connection);
+        }
+
+        return results;
     }
 
     public T findById(int id) {
@@ -66,6 +84,7 @@ public class AbstractDAO<T> {
         List<T> list = new ArrayList<T>();
         Constructor[] ctors = type.getDeclaredConstructors();
         Constructor ctor = null;
+
         for (int i = 0; i < ctors.length; i++) {
             ctor = ctors[i];
             if (ctor.getGenericParameterTypes().length == 0)
@@ -77,37 +96,59 @@ public class AbstractDAO<T> {
                 T instance = (T)ctor.newInstance();
                 for (Field field : type.getDeclaredFields()) {
                     String fieldName = field.getName();
-                    Object value = resultSet.getObject(fieldName);
-                    PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, type);
-                    Method method = propertyDescriptor.getWriteMethod();
-                    method.invoke(instance, value);
+
+                    Object value = resultSet.getObject(fieldName.toLowerCase());
+
+                    if (value != null) {
+                        if (value instanceof BigDecimal) {
+                            value = ((BigDecimal)value).doubleValue();
+                        }
+                        else if (value instanceof Long) {
+                            value = ((Long)value).intValue();
+                        }
+                    }
+
+                    field.setAccessible(true);
+                    field.set(instance, value);
                 }
                 list.add(instance);
             }
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IntrospectionException e) {
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, type.getName() + "DAO:createObjects " + e.getMessage());
             e.printStackTrace();
         }
+
         return list;
     }
 
-    public T insert(T t) {
-        Connection connection;
-        PreparedStatement statement;
-        ResultSet resultSet;
+    private String createInsertQuery() {
+        String tableName = type.getSimpleName().toLowerCase();
 
-        String query = getInsertQuery();
+        StringBuilder columns = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+
+        for (Field field : type.getDeclaredFields()) {
+            if (field.getName().equalsIgnoreCase("id")) {
+                continue;
+            }
+            if (!columns.isEmpty()) {
+                columns.append(", ");
+                values.append(", ");
+            }
+
+            columns.append(field.getName());
+            values.append("?");
+        }
+
+        return "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + values + ")";
+    }
+
+    public T insert(T t) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet =  null;
+
+        String query = createInsertQuery();
 
         try {
             connection = ConnectionFactory.getConnection();
@@ -135,34 +176,12 @@ public class AbstractDAO<T> {
             LOGGER.log(Level.WARNING, type.getName() + "DAO:insert" + e.getMessage());
             e.printStackTrace();
         } finally {
-            ConnectionFactory.close((ResultSet) null);
-            ConnectionFactory.close((java.sql.Statement) null);
-            ConnectionFactory.close((Connection) null);
+            ConnectionFactory.close(resultSet);
+            ConnectionFactory.close(statement);
+            ConnectionFactory.close(connection);
         }
 
         return t;
-    }
-
-    private String getInsertQuery() {
-        String tableName = type.getSimpleName().toLowerCase();
-
-        StringBuilder columns = new StringBuilder();
-        StringBuilder values = new StringBuilder();
-
-        for (Field field : type.getDeclaredFields()) {
-            if (field.getName().equalsIgnoreCase("id")) {
-                continue;
-            }
-            if (!columns.isEmpty()) {
-                columns.append(", ");
-                values.append(", ");
-            }
-
-            columns.append(field.getName());
-            values.append("?");
-        }
-
-        return "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + values + ")";
     }
 
     public T update(T t) {

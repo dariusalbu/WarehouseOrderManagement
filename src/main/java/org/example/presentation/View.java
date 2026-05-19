@@ -54,7 +54,7 @@ public class View extends JFrame {
     public View() {
         this.setContentPane(mainPanel);
         this.setTitle("Orders Management");
-        this.setSize(600, 400);
+        this.setSize(800, 600);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -144,7 +144,13 @@ public class View extends JFrame {
         return addProductStockTextField;
     }
 
+    public JTable getClientTable() {
+        return clientTable;
+    }
 
+    public JTable getProductTable() {
+        return productTable;
+    }
 
     public JTextField getUpdateProductNameTextField() {
         return updateProductNameTextField;

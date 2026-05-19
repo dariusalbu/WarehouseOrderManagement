@@ -1,10 +1,13 @@
 package org.example.model;
 
 public class Product {
-    private int id;
+    private Integer id;
     private String name;
     private Double price;
     private int stock;
+
+    public Product() {
+    }
 
     public Product(String name, Double price, int currentStock) {
         this.name = name;
