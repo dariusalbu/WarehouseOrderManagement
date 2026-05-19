@@ -35,7 +35,8 @@ public class Controller {
         this.view.updateProductButtonListener(e -> updateProductWindow());
         this.view.completeAddProductButtonListener(e -> completeAddProduct());
         this.view.completeUpdateProductListener(e -> completeUpdateProduct());
-
+        this.view.getDeleteProductButtonListener(e -> deleteProduct());
+        this.view.getDeleteClientButtonListener(e -> deleteClient());
     }
 
     public void clientWindow() {
@@ -203,5 +204,47 @@ public class Controller {
     public void refreshProductTable() {
         List<Product> products = productBLL.findAll();
         populateTable(this.view.getProductTable(), products);
+    }
+
+    public void deleteProduct() {
+        int selectedRow = this.view.getProductTable().getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a product to remove", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            int id = Integer.parseInt(this.view.getProductTable().getValueAt(selectedRow, 0).toString());
+            String name = this.view.getProductTable().getValueAt(selectedRow, 1).toString();
+            double price = Double.parseDouble(this.view.getProductTable().getValueAt(selectedRow, 2).toString());
+            int stock = Integer.parseInt(this.view.getProductTable().getValueAt(selectedRow, 3).toString());
+
+            Product product = new Product(name, price, stock);
+            product.setId(id);
+
+            productBLL.delete(product);
+
+            refreshProductTable();
+        }
+    }
+
+    public void deleteClient() {
+        int selectedRow = this.view.getClientTable().getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a client to delete", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            int id = Integer.parseInt(this.view.getClientTable().getValueAt(selectedRow, 0).toString());
+            String name = this.view.getClientTable().getValueAt(selectedRow, 1).toString();
+            String email = this.view.getClientTable().getValueAt(selectedRow, 2).toString();
+            int age = Integer.parseInt(this.view.getClientTable().getValueAt(selectedRow, 3).toString());
+
+            Client client = new Client(name, email, age);
+            client.setId(id);
+
+            clientBLL.delete(client);
+
+            refreshClientTable();
+        }
     }
 }

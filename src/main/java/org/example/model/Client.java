@@ -14,4 +14,24 @@ public class Client {
         this.email = email;
         this.age = age;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

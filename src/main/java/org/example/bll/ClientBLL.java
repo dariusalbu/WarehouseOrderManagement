@@ -27,4 +27,8 @@ public class ClientBLL {
     public void update(Client client) {
         clientDAO.update(client);
     }
+
+    public void delete(Client client) {
+        clientDAO.delete(client);
+    }
 }

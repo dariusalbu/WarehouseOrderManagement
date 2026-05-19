@@ -14,4 +14,24 @@ public class Product {
         this.price = price;
         this.stock = currentStock;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

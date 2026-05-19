@@ -175,4 +175,12 @@ public class View extends JFrame {
     public JTextField getUpdateClientAgeTextField() {
         return updateClientAgeTextField;
     }
+
+    public void getDeleteProductButtonListener(ActionListener listener) {
+        deleteProductButton.addActionListener(listener);
+    }
+
+    public void getDeleteClientButtonListener(ActionListener listener) {
+        deleteClientButton.addActionListener(listener);
+    }
 }

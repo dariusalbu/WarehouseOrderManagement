@@ -189,4 +189,31 @@ public class AbstractDAO<T> {
 
         return t;
     }
+
+    public T delete(T t) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        String query = "DELETE FROM " + type.getSimpleName().toLowerCase() + " WHERE id = ?";
+
+        try {
+            Field idField = type.getDeclaredField("id");
+            idField.setAccessible(true);
+
+            Object idValue = idField.get(t);
+
+            connection = ConnectionFactory.getConnection();
+            statement = connection.prepareStatement(query);
+
+            statement.setObject(1, idValue);
+
+            statement.execute();
+        } catch (SQLException | NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } finally {
+            ConnectionFactory.close(statement);
+            ConnectionFactory.close(connection);
+        }
+        return t;
+    }
 }

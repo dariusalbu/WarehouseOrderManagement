@@ -27,4 +27,8 @@ public class ProductBLL {
     public void update(Product product) {
         productDAO.update(product);
     }
+
+    public void delete(Product product) {
+        productDAO.delete(product);
+    }
 }
