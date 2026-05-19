@@ -185,7 +185,55 @@ public class AbstractDAO<T> {
     }
 
     public T update(T t) {
+        Connection connection = null;
+        PreparedStatement statement = null;
 
+        String tableName = type.getSimpleName().toLowerCase();
+        StringBuilder columns = new StringBuilder();
+
+        for (Field field : type.getDeclaredFields()) {
+            if (field.getName().equalsIgnoreCase("id")) {
+                continue;
+            }
+            if (!columns.isEmpty()) {
+                columns.append(", ");
+            }
+            columns.append(field.getName().toLowerCase()).append("=?");
+        }
+
+        String query = "UPDATE " + tableName + " SET " + columns + " WHERE id=?";
+
+        try {
+            connection = ConnectionFactory.getConnection();
+            statement = connection.prepareStatement(query);
+
+            int index = 1;
+            Field idField = null;
+
+            for (Field field : type.getDeclaredFields()) {
+                field.setAccessible(true);
+
+                if (field.getName().equalsIgnoreCase("id")) {
+                    idField = field;
+                    continue;
+                }
+
+                statement.setObject(index++, field.get(t));
+            }
+
+            if (idField != null) {
+                idField.setAccessible(true);
+                statement.setObject(index, idField.get(t));
+            }
+
+            statement.execute();
+        } catch (Exception e) {
+            Logger.getLogger(AbstractDAO.class.getName()).log(Level.SEVERE, type.getName() + "DAO:update" + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            ConnectionFactory.close(statement);
+            ConnectionFactory.close(connection);
+        }
 
         return t;
     }

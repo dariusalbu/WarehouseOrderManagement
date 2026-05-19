@@ -58,10 +58,23 @@ public class Controller {
     }
 
     public void updateClientWindow() {
-        this.view.changeClientWindowCard("updateClientCard");
+        int selectedRow = this.view.getClientTable().getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a client to update", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            Client client = getSelectedClientFromTable(selectedRow);
+
+            this.view.getUpdateClientNameTextField().setText(client.getName());
+            this.view.getUpdateClientEmailTextField().setText(client.getEmail());
+            this.view.getUpdateClientAgeTextField().setText(Integer.toString(client.getAge()));
+
+            this.view.changeClientWindowCard("updateClientCard");
+        }
     }
 
-    public Client getClientData(String name, String email, int age) throws Exception {
+    public Client getClientDataTextField(String name, String email, int age) throws Exception {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Please enter your name");
         }
@@ -77,7 +90,7 @@ public class Controller {
 
     public void completeAddClient() {
         try {
-            Client client = getClientData(
+            Client client = getClientDataTextField(
                     this.view.getAddClientNameTextField().getText(),
                     this.view.getAddClientEmailTextField().getText(),
                     Integer.parseInt(this.view.getAddClientAgeTextField().getText())
@@ -100,9 +113,34 @@ public class Controller {
     }
 
     public void completeUpdateClient() {
+        try {
+            int selectedRow = this.view.getClientTable().getSelectedRow();
 
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(null, "Please select a client to update", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                int id = Integer.parseInt(this.view.getClientTable().getValueAt(selectedRow, 0).toString());
 
-        this.view.changeClientWindowCard("viewClientCard");
+                Client client = getClientDataTextField(
+                        this.view.getUpdateClientNameTextField().getText(),
+                        this.view.getUpdateClientEmailTextField().getText(),
+                        Integer.parseInt(this.view.getUpdateClientAgeTextField().getText())
+                );
+
+                client.setId(id);
+
+                clientBLL.update(client);
+                refreshClientTable();
+                this.view.changeClientWindowCard("viewClientCard");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addProductWindow() {
@@ -110,10 +148,23 @@ public class Controller {
     }
 
     public void updateProductWindow() {
-        this.view.changeProductWindowCard("updateProductCard");
+        int selectedRow = this.view.getProductTable().getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(null, "Please select a product to update", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        else {
+            Product product = getSelectedProductFromTable(selectedRow);
+
+            this.view.getUpdateProductNameTextField().setText(product.getName());
+            this.view.getUpdateProductPriceTextField().setText(Double.toString(product.getPrice()));
+            this.view.getUpdateProductStockTextField().setText(Integer.toString(product.getStock()));
+
+            this.view.changeProductWindowCard("updateProductCard");
+        }
     }
 
-    public Product getProductData(String name, double price, int stock) throws Exception {
+    public Product getProductDataTextField(String name, double price, int stock) throws Exception {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Please enter your name");
         }
@@ -129,7 +180,7 @@ public class Controller {
 
     public void completeAddProduct() {
         try {
-            Product  product = getProductData(
+            Product  product = getProductDataTextField(
                     this.view.getAddProductNameTextField().getText(),
                     Double.parseDouble(this.view.getAddProductPriceTextField().getText()),
                     Integer.parseInt(this.view.getAddProductStockTextField().getText())
@@ -153,9 +204,34 @@ public class Controller {
     }
 
     void completeUpdateProduct() {
+        try {
+            int selectedRow = this.view.getProductTable().getSelectedRow();
 
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(null, "Please select a product to update", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                int id = Integer.parseInt(this.view.getProductTable().getValueAt(selectedRow, 0).toString());
 
-        this.view.changeProductWindowCard("viewProductCard");
+                Product  product = getProductDataTextField(
+                        this.view.getUpdateProductNameTextField().getText(),
+                        Double.parseDouble(this.view.getUpdateProductPriceTextField().getText()),
+                        Integer.parseInt(this.view.getUpdateProductStockTextField().getText())
+                );
+
+                product.setId(id);
+
+                productBLL.update(product);
+                refreshProductTable();
+                this.view.changeProductWindowCard("viewProductCard");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid number", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void populateTable(JTable table, List<?> objects) {
@@ -213,18 +289,23 @@ public class Controller {
             JOptionPane.showMessageDialog(null, "Please select a product to remove", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            int id = Integer.parseInt(this.view.getProductTable().getValueAt(selectedRow, 0).toString());
-            String name = this.view.getProductTable().getValueAt(selectedRow, 1).toString();
-            double price = Double.parseDouble(this.view.getProductTable().getValueAt(selectedRow, 2).toString());
-            int stock = Integer.parseInt(this.view.getProductTable().getValueAt(selectedRow, 3).toString());
-
-            Product product = new Product(name, price, stock);
-            product.setId(id);
+            Product product = getSelectedProductFromTable(selectedRow);
 
             productBLL.delete(product);
 
             refreshProductTable();
         }
+    }
+
+    private Product getSelectedProductFromTable(int selectedRow) {
+        int id = Integer.parseInt(this.view.getProductTable().getValueAt(selectedRow, 0).toString());
+        String name = this.view.getProductTable().getValueAt(selectedRow, 1).toString();
+        double price = Double.parseDouble(this.view.getProductTable().getValueAt(selectedRow, 2).toString());
+        int stock = Integer.parseInt(this.view.getProductTable().getValueAt(selectedRow, 3).toString());
+
+        Product product = new Product(name, price, stock);
+        product.setId(id);
+        return product;
     }
 
     public void deleteClient() {
@@ -234,17 +315,22 @@ public class Controller {
             JOptionPane.showMessageDialog(null, "Please select a client to delete", "Error", JOptionPane.ERROR_MESSAGE);
         }
         else {
-            int id = Integer.parseInt(this.view.getClientTable().getValueAt(selectedRow, 0).toString());
-            String name = this.view.getClientTable().getValueAt(selectedRow, 1).toString();
-            String email = this.view.getClientTable().getValueAt(selectedRow, 2).toString();
-            int age = Integer.parseInt(this.view.getClientTable().getValueAt(selectedRow, 3).toString());
-
-            Client client = new Client(name, email, age);
-            client.setId(id);
+            Client client = getSelectedClientFromTable(selectedRow);
 
             clientBLL.delete(client);
 
             refreshClientTable();
         }
+    }
+
+    private Client getSelectedClientFromTable(int selectedRow) {
+        int id = Integer.parseInt(this.view.getClientTable().getValueAt(selectedRow, 0).toString());
+        String name = this.view.getClientTable().getValueAt(selectedRow, 1).toString();
+        String email = this.view.getClientTable().getValueAt(selectedRow, 2).toString();
+        int age = Integer.parseInt(this.view.getClientTable().getValueAt(selectedRow, 3).toString());
+
+        Client client = new Client(name, email, age);
+        client.setId(id);
+        return client;
     }
 }
