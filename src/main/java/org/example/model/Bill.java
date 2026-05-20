@@ -1,6 +1,6 @@
 package org.example.model;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 public record Bill (
     int id,

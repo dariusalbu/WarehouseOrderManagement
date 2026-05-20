@@ -1,7 +1,6 @@
 package org.example.presentation;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class View extends JFrame {
@@ -9,6 +8,7 @@ public class View extends JFrame {
     private JButton clientWindowButton;
     private JButton productWindowButton;
     private JButton orderWindowButton;
+    private JButton billWindowButton;
 
     public View() {
         this.setContentPane(mainPanel);
@@ -30,4 +30,7 @@ public class View extends JFrame {
     public void orderButtonListener(ActionListener listener) {
         orderWindowButton.addActionListener(listener);
     }
+
+    public void billButtonListener(ActionListener listener) {
+        billWindowButton.addActionListener(listener);}
 }

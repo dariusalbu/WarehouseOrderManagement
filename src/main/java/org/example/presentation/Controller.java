@@ -12,6 +12,7 @@ public class Controller {
     ControllerClient controllerClient;
     ControllerProduct controllerProduct;
     ControllerWarehouseOrder controllerWarehouseOrder;
+    ControllerBill controllerBill;
 
 
     public Controller() {
@@ -20,6 +21,7 @@ public class Controller {
         this.view.clientButtonListener(e -> clientWindow());
         this.view.productButtonListener(e -> productWindow());
         this.view.orderButtonListener(e -> orderWindow());
+        this.view.billButtonListener(e -> billWindow());
     }
 
     public void clientWindow() {
@@ -46,6 +48,15 @@ public class Controller {
         }
         else {
             this.controllerWarehouseOrder.warehouseOrderGUI.setVisible(true);
+        }
+    }
+
+    public void billWindow() {
+        if (this.controllerBill == null) {
+            controllerBill = new ControllerBill();
+        }
+        else {
+            this.controllerBill.billGUI.setVisible(true);
         }
     }
 

@@ -34,4 +34,8 @@ public class Product {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 }

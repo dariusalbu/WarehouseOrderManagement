@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -82,36 +83,60 @@ public class AbstractDAO<T> {
 
     private List<T> createObjects(ResultSet resultSet) {
         List<T> list = new ArrayList<T>();
-        Constructor[] ctors = type.getDeclaredConstructors();
-        Constructor ctor = null;
 
-        for (int i = 0; i < ctors.length; i++) {
-            ctor = ctors[i];
-            if (ctor.getGenericParameterTypes().length == 0)
-                break;
-        }
         try {
-            while (resultSet.next()) {
-                ctor.setAccessible(true);
-                T instance = (T)ctor.newInstance();
-                for (Field field : type.getDeclaredFields()) {
-                    String fieldName = field.getName();
+            if (type.isRecord()) {
+                java.lang.reflect.RecordComponent[] components = type.getRecordComponents();
+                Class<?>[] componentType = Arrays.stream(components).map(RecordComponent::getType).toArray(Class<?>[]::new);
+                Constructor<T> recordCtor = type.getDeclaredConstructor(componentType);
+                recordCtor.setAccessible(true);
 
-                    Object value = resultSet.getObject(fieldName.toLowerCase());
-
-                    if (value != null) {
+                while (resultSet.next()) {
+                    Object[] args = new Object[componentType.length];
+                    for (int i = 0; i < componentType.length; i++) {
+                        Object value = resultSet.getObject(components[i].getName().toLowerCase());
                         if (value instanceof BigDecimal) {
-                            value = ((BigDecimal)value).doubleValue();
+                            value = ((BigDecimal) value).doubleValue();
                         }
-                        else if (value instanceof Long) {
-                            value = ((Long)value).intValue();
+                        if (value instanceof Long) {
+                            value = ((Long) value).intValue();
                         }
+                        args[i] = value;
                     }
-
-                    field.setAccessible(true);
-                    field.set(instance, value);
+                    list.add(recordCtor.newInstance(args));
                 }
-                list.add(instance);
+            }
+            else {
+                Constructor[] ctors = type.getDeclaredConstructors();
+                Constructor ctor = null;
+
+                for (int i = 0; i < ctors.length; i++) {
+                    ctor = ctors[i];
+                    if (ctor.getGenericParameterTypes().length == 0)
+                        break;
+                }
+
+                while (resultSet.next()) {
+                    ctor.setAccessible(true);
+                    T instance = (T) ctor.newInstance();
+                    for (Field field : type.getDeclaredFields()) {
+                        String fieldName = field.getName();
+
+                        Object value = resultSet.getObject(fieldName.toLowerCase());
+
+                        if (value != null) {
+                            if (value instanceof BigDecimal) {
+                                value = ((BigDecimal) value).doubleValue();
+                            } else if (value instanceof Long) {
+                                value = ((Long) value).intValue();
+                            }
+                        }
+
+                        field.setAccessible(true);
+                        field.set(instance, value);
+                    }
+                    list.add(instance);
+                }
             }
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, type.getName() + "DAO:createObjects " + e.getMessage());
@@ -123,6 +148,9 @@ public class AbstractDAO<T> {
 
     private String createInsertQuery() {
         String tableName = type.getSimpleName().toLowerCase();
+        if (type.getSimpleName().equalsIgnoreCase("warehouseOrder")) {
+            tableName = "warehouse_order";
+        }
 
         StringBuilder columns = new StringBuilder();
         StringBuilder values = new StringBuilder();
