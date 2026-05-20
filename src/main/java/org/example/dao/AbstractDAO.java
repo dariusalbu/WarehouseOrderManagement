@@ -24,6 +24,12 @@ public class AbstractDAO<T> {
         this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
+    /**
+     * Creates a SELECT SQL query for a specific field.
+     *
+     * @param field The field name for the WHERE clause
+     * @return The SQL query string
+     */
     private String createSelectQuery(String field) {
         return "SELECT " +
                 " * " +
@@ -32,6 +38,11 @@ public class AbstractDAO<T> {
                 " WHERE " + field + " =?";
     }
 
+    /**
+     * Gets all records from the table.
+     *
+     * @return A list of all objects
+     */
     public List<T> findAll() {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -56,6 +67,12 @@ public class AbstractDAO<T> {
         return results;
     }
 
+    /**
+     * Finds an object by its ID.
+     *
+     * @param id The ID to search for
+     * @return The found object, or null
+     */
     public T findById(int id) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -78,6 +95,12 @@ public class AbstractDAO<T> {
         return null;
     }
 
+    /**
+     * Converts a ResultSet into a list of objects using reflection.
+     *
+     * @param resultSet The database result set
+     * @return A list of objects of type T
+     */
     private List<T> createObjects(ResultSet resultSet) {
         List<T> list = new ArrayList<T>();
 
@@ -144,6 +167,9 @@ public class AbstractDAO<T> {
         return list;
     }
 
+    /**
+     * Creates the Insert query.
+     */
     private String createInsertQuery() {
         String tableName = type.getSimpleName().toLowerCase();
         if (type.getSimpleName().equalsIgnoreCase("warehouseOrder")) {
@@ -166,6 +192,12 @@ public class AbstractDAO<T> {
         return "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + values + ")";
     }
 
+    /**
+     * Inserts an object into the database.
+     *
+     * @param t The object to insert
+     * @return The inserted object
+     */
     public T insert(T t) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -209,6 +241,12 @@ public class AbstractDAO<T> {
         return t;
     }
 
+    /**
+     * Updates an object in the database.
+     *
+     * @param t The object to update
+     * @return The updated object
+     */
     public T update(T t) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -257,6 +295,12 @@ public class AbstractDAO<T> {
         return t;
     }
 
+    /**
+     * Deletes an object from the database.
+     *
+     * @param t The object to delete
+     * @return The deleted object
+     */
     public T delete(T t) {
         Connection connection = null;
         PreparedStatement statement = null;

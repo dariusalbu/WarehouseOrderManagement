@@ -37,6 +37,9 @@ public class ControllerWarehouseOrder {
         this.warehouseOrderGUI.placeOrderButtonListener(e -> placeOrderLogic());
     }
 
+    /**
+     * Processes the order logic and checks stock.
+     */
     private void placeOrderLogic() {
         Client client = getSelectedClientFromTable();
         Product product = getSelectedProductFromTable();
@@ -83,6 +86,11 @@ public class ControllerWarehouseOrder {
         }
     }
 
+    /**
+     * Gets the selected client from the UI table.
+     *
+     * @return The selected Client object
+     */
     private Client getSelectedClientFromTable() {
         Client client = null;
 
@@ -104,6 +112,11 @@ public class ControllerWarehouseOrder {
         return client;
     }
 
+    /**
+     * Gets the selected product from the UI table.
+     *
+     * @return The selected Product object
+     */
     private Product getSelectedProductFromTable() {
         Product product = null;
 

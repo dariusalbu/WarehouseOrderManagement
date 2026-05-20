@@ -88,6 +88,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Populates a table using reflection.
+     *
+     * @param table The table to populate
+     * @param objects The list of objects
+     */
     public static void populateTable(JTable table, List<?> objects) {
         if (objects == null || objects.isEmpty()) {
             table.setModel(new DefaultTableModel());
