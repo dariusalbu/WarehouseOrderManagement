@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.example.connection.ConnectionFactory;
 
@@ -21,7 +22,6 @@ public class AbstractDAO<T> {
     @SuppressWarnings("unchecked")
     public AbstractDAO() {
         this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-
     }
 
     private String createSelectQuery(String field) {
@@ -104,34 +104,35 @@ public class AbstractDAO<T> {
                 }
             }
             else {
-                Constructor[] ctors = type.getDeclaredConstructors();
-                Constructor ctor = null;
-
-                for (int i = 0; i < ctors.length; i++) {
-                    ctor = ctors[i];
-                    if (ctor.getGenericParameterTypes().length == 0)
-                        break;
-                }
+                Constructor<?> ctor = Arrays.stream(type.getDeclaredConstructors())
+                        .filter(c -> c.getParameterCount() == 0)
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("No default constructor found for " + type.getName()));
+                ctor.setAccessible(true);
 
                 while (resultSet.next()) {
-                    ctor.setAccessible(true);
                     T instance = (T) ctor.newInstance();
-                    for (Field field : type.getDeclaredFields()) {
-                        String fieldName = field.getName();
 
-                        Object value = resultSet.getObject(fieldName.toLowerCase());
+                    Arrays.stream(type.getDeclaredFields()).forEach(field -> {
+                        try {
+                            String fieldName = field.getName();
+                            Object value = resultSet.getObject(fieldName.toLowerCase());
 
-                        if (value != null) {
-                            if (value instanceof BigDecimal) {
-                                value = ((BigDecimal) value).doubleValue();
-                            } else if (value instanceof Long) {
-                                value = ((Long) value).intValue();
+                            if (value != null) {
+                                if (value instanceof BigDecimal) {
+                                    value = ((BigDecimal) value).doubleValue();
+                                } else if (value instanceof Long) {
+                                    value = ((Long) value).intValue();
+                                }
                             }
-                        }
 
-                        field.setAccessible(true);
-                        field.set(instance, value);
-                    }
+                            field.setAccessible(true);
+                            field.set(instance, value);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
                     list.add(instance);
                 }
             }
@@ -149,21 +150,18 @@ public class AbstractDAO<T> {
             tableName = "warehouse_order";
         }
 
-        StringBuilder columns = new StringBuilder();
-        StringBuilder values = new StringBuilder();
+        Field[] fields = type.getDeclaredFields();
 
-        for (Field field : type.getDeclaredFields()) {
-            if (field.getName().equalsIgnoreCase("id")) {
-                continue;
-            }
-            if (!columns.isEmpty()) {
-                columns.append(", ");
-                values.append(", ");
-            }
+        String columns = Arrays.stream(fields)
+                .map(Field::getName)
+                .filter(name -> !name.equalsIgnoreCase("id"))
+                .collect(Collectors.joining(", "));
 
-            columns.append(field.getName());
-            values.append("?");
-        }
+        String values = Arrays.stream(fields)
+                .map(Field::getName)
+                .filter(name -> !name.equalsIgnoreCase("id"))
+                .map(name -> "?")
+                .collect(Collectors.joining(", "));
 
         return "INSERT INTO " + tableName + " (" + columns + ") VALUES (" + values + ")";
     }
@@ -215,19 +213,13 @@ public class AbstractDAO<T> {
         Connection connection = null;
         PreparedStatement statement = null;
 
+        String columns = Arrays.stream(type.getDeclaredFields())
+                .map(Field::getName)
+                .filter(name -> !name.equalsIgnoreCase("id"))
+                .map(name -> name.toLowerCase() + "=?")
+                .collect(Collectors.joining(", "));
+
         String tableName = type.getSimpleName().toLowerCase();
-        StringBuilder columns = new StringBuilder();
-
-        for (Field field : type.getDeclaredFields()) {
-            if (field.getName().equalsIgnoreCase("id")) {
-                continue;
-            }
-            if (!columns.isEmpty()) {
-                columns.append(", ");
-            }
-            columns.append(field.getName().toLowerCase()).append("=?");
-        }
-
         String query = "UPDATE " + tableName + " SET " + columns + " WHERE id=?";
 
         try {

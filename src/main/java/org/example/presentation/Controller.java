@@ -3,9 +3,12 @@ package org.example.presentation;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class Controller {
     private final View view;
@@ -94,24 +97,27 @@ public class Controller {
         Class<?> type = objects.get(0).getClass();
         Field[] fields = type.getDeclaredFields();
 
-        Vector<String> columnNames = new Vector<>();
-        for (Field field : fields) {
-            columnNames.add(field.getName());
-        }
+        Vector<String> columnNames = Arrays.stream(fields)
+                .map(Field::getName)
+                .collect(Collectors.toCollection(Vector::new));
 
-        Vector<Vector<Object>> data = new Vector<>();
-        for (Object object : objects) {
-            Vector<Object> row = new Vector<>();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                try {
-                    row.add(field.get(object));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-            data.add(row);
-        }
+        Vector<Vector<Object>> data = objects.stream()
+                .map(object -> {
+                    Vector<Object> row = new Vector<>();
+
+                    Arrays.stream(fields).forEach(field -> {
+                        field.setAccessible(true);
+                        try {
+                            row.add(field.get(object));
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                    return row;
+                })
+                .collect(Collectors.toCollection(Vector::new));
+
 
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override

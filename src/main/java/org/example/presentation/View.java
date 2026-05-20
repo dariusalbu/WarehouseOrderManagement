@@ -13,7 +13,7 @@ public class View extends JFrame {
     public View() {
         this.setContentPane(mainPanel);
         this.setTitle("Warehouse");
-        this.setSize(300, 400);
+        this.setSize(250, 350);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
