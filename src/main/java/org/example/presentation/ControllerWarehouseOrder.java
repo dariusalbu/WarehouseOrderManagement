@@ -21,16 +21,19 @@ public class ControllerWarehouseOrder {
     final ProductBLL productBLL;
     final ClientBLL clientBLL;
     final BillBLL billBLL;
+    final Controller mainController;
 
-    public ControllerWarehouseOrder() {
+    public ControllerWarehouseOrder(Controller mainController) {
         this.warehouseOrderGUI = new WarehouseOrderGUI();
         this.warehouseOrderBLL = new WarehouseOrderBLL();
+        this.mainController = mainController;
         this.productBLL = new ProductBLL();
         this.clientBLL = new ClientBLL();
         this.billBLL = new BillBLL();
 
         refreshClientTable();
         refreshProductTable();
+
         this.warehouseOrderGUI.placeOrderButtonListener(e -> placeOrderLogic());
     }
 
@@ -53,7 +56,7 @@ public class ControllerWarehouseOrder {
             }
 
             WarehouseOrder wareHouseOrder = new WarehouseOrder(client.getId(), product.getId(), quantity, new Timestamp(System.currentTimeMillis()));
-            warehouseOrderBLL.insert(wareHouseOrder);
+            wareHouseOrder = warehouseOrderBLL.insert(wareHouseOrder);
 
             product.setStock(product.getStock() - quantity);
             productBLL.update(product);
@@ -70,7 +73,9 @@ public class ControllerWarehouseOrder {
 
             billBLL.insert(bill);
 
-            refreshProductTable();
+            mainController.notifyOrderWindow();
+            mainController.notifyProductWindow();
+            mainController.notifyBillWindow();
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(warehouseOrderGUI, "Please enter a valid quantity");
         } catch  (Exception e) {

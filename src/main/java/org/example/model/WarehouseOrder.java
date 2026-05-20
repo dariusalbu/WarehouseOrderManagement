@@ -13,7 +13,7 @@ public class WarehouseOrder {
         this.client_id = client_id;
         this.product_id = product_id;
         this.quantity = quantity;
-        this.order_date = new Timestamp(System.currentTimeMillis());
+        this.order_date = order_date;
     }
 
     public int getId() {

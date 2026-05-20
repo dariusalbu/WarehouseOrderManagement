@@ -26,7 +26,7 @@ public class Controller {
 
     public void clientWindow() {
         if (this.controllerClient == null) {
-            controllerClient = new ControllerClient();
+            controllerClient = new ControllerClient(this);
         }
         else {
             this.controllerClient.clientGUI.setVisible(true);
@@ -35,7 +35,7 @@ public class Controller {
 
     public void productWindow() {
         if (this.controllerProduct == null) {
-            controllerProduct = new ControllerProduct();
+            controllerProduct = new ControllerProduct(this);
         }
         else {
             this.controllerProduct.productGUI.setVisible(true);
@@ -44,7 +44,7 @@ public class Controller {
 
     public void orderWindow() {
         if (this.controllerWarehouseOrder == null) {
-            controllerWarehouseOrder = new ControllerWarehouseOrder();
+            controllerWarehouseOrder = new ControllerWarehouseOrder(this);
         }
         else {
             this.controllerWarehouseOrder.warehouseOrderGUI.setVisible(true);
@@ -53,10 +53,35 @@ public class Controller {
 
     public void billWindow() {
         if (this.controllerBill == null) {
-            controllerBill = new ControllerBill();
+            controllerBill = new ControllerBill(this);
         }
         else {
             this.controllerBill.billGUI.setVisible(true);
+        }
+    }
+
+    public void notifyClientWindow() {
+        if (controllerClient != null) {
+            controllerClient.refreshClientTable();
+        }
+    }
+
+    public void notifyProductWindow() {
+        if (controllerProduct != null) {
+            controllerProduct.refreshProductTable();
+        }
+    }
+
+    public void notifyOrderWindow() {
+        if (controllerWarehouseOrder != null) {
+            controllerWarehouseOrder.refreshClientTable();
+            controllerWarehouseOrder.refreshProductTable();
+        }
+    }
+
+    public void notifyBillWindow() {
+        if (controllerBill != null) {
+            controllerBill.refreshTable();
         }
     }
 

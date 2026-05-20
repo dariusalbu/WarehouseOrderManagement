@@ -4,10 +4,7 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.*;
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -180,7 +177,7 @@ public class AbstractDAO<T> {
 
         try {
             connection = ConnectionFactory.getConnection();
-            statement = connection.prepareStatement(query);
+            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             int index = 1;
             for (Field field : type.getDeclaredFields()) {
@@ -196,9 +193,11 @@ public class AbstractDAO<T> {
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 int id = resultSet.getInt(1);
-                Field idField = type.getDeclaredField("id");
-                idField.setAccessible(true);
-                idField.set(t, id);
+                if (!type.isRecord()) {
+                    Field idField = type.getDeclaredField("id");
+                    idField.setAccessible(true);
+                    idField.set(t, id);
+                }
             }
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, type.getName() + "DAO:insert" + e.getMessage());

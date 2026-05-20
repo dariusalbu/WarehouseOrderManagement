@@ -10,10 +10,12 @@ import static org.example.presentation.Controller.populateTable;
 public class ControllerBill {
     final BillGUI billGUI;
     final BillBLL billBLL;
+    final Controller mainController;
 
-    public ControllerBill() {
+    public ControllerBill(Controller mainController) {
         this.billGUI = new BillGUI();
         this.billBLL = new BillBLL();
+        this.mainController = mainController;
 
         refreshTable();
     }

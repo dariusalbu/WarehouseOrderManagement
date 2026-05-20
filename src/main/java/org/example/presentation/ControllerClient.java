@@ -11,10 +11,12 @@ import static org.example.presentation.Controller.populateTable;
 public class ControllerClient {
     final ClientGUI clientGUI;
     final ClientBLL clientBLL;
+    final Controller mainController;
 
-    public ControllerClient() {
+    public ControllerClient(Controller mainController) {
         this.clientGUI = new ClientGUI();
         this.clientBLL = new ClientBLL();
+        this.mainController = mainController;
 
         refreshClientTable();
         this.clientGUI.addClientButtonListener(e -> addClientWindow());
@@ -38,7 +40,9 @@ public class ControllerClient {
 
             this.clientGUI.changeClientWindowCard("viewClientCard");
             clientBLL.insert(client);
-            refreshClientTable();
+
+            mainController.notifyClientWindow();
+            mainController.notifyOrderWindow();
 
             this.clientGUI.getAddClientNameTextField().setText("");
             this.clientGUI.getAddClientEmailTextField().setText("");
@@ -88,7 +92,10 @@ public class ControllerClient {
                 client.setId(id);
 
                 clientBLL.update(client);
-                refreshClientTable();
+
+                mainController.notifyClientWindow();
+                mainController.notifyOrderWindow();
+
                 this.clientGUI.changeClientWindowCard("viewClientCard");
             }
         } catch (NumberFormatException e) {
@@ -111,7 +118,8 @@ public class ControllerClient {
 
             clientBLL.delete(client);
 
-            refreshClientTable();
+            mainController.notifyClientWindow();
+            mainController.notifyOrderWindow();
         }
     }
 

@@ -11,10 +11,12 @@ import static org.example.presentation.Controller.populateTable;
 public class ControllerProduct {
     final ProductGUI productGUI;
     final ProductBLL productBLL;
+    final Controller mainController;
 
-    public ControllerProduct() {
+    public ControllerProduct(Controller mainController) {
         productGUI = new ProductGUI();
         this.productBLL = new ProductBLL();
+        this.mainController = mainController;
 
         refreshProductTable();
         this.productGUI.addProductButtonListener(e -> addProductWindow());
@@ -38,7 +40,9 @@ public class ControllerProduct {
 
             this.productGUI.changeProductWindowCard("viewProductCard");
             productBLL.insert(product);
-            refreshProductTable();
+
+            mainController.notifyProductWindow();
+            mainController.notifyOrderWindow();
 
             this.productGUI.getAddProductNameTextField().setText("");
             this.productGUI.getAddProductPriceTextField().setText("");
@@ -89,7 +93,10 @@ public class ControllerProduct {
                 product.setId(id);
 
                 productBLL.update(product);
-                refreshProductTable();
+
+                mainController.notifyProductWindow();
+                mainController.notifyOrderWindow();
+
                 this.productGUI.changeProductWindowCard("viewProductCard");
             }
         } catch (NumberFormatException e) {
@@ -112,7 +119,8 @@ public class ControllerProduct {
 
             productBLL.delete(product);
 
-            refreshProductTable();
+            mainController.notifyProductWindow();
+            mainController.notifyOrderWindow();
         }
     }
 

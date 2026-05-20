@@ -10,7 +10,7 @@ public class WarehouseOrderBLL {
         orderDao = new WarehouseOrderDAO();
     }
 
-    public void insert(WarehouseOrder warehouseOrder) {
-        orderDao.insert(warehouseOrder);
+    public WarehouseOrder insert(WarehouseOrder warehouseOrder) {
+        return orderDao.insert(warehouseOrder);
     }
 }
