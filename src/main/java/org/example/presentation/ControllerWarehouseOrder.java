@@ -87,7 +87,7 @@ public class ControllerWarehouseOrder {
     }
 
     /**
-     * Gets the selected client from the UI table.
+     * Gets the selected client from the table.
      *
      * @return The selected Client object
      */
@@ -113,7 +113,7 @@ public class ControllerWarehouseOrder {
     }
 
     /**
-     * Gets the selected product from the UI table.
+     * Gets the selected product from the table.
      *
      * @return The selected Product object
      */

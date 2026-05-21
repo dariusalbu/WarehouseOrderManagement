@@ -27,6 +27,9 @@ public class Controller {
         this.view.billButtonListener(e -> billWindow());
     }
 
+    /**
+     * Opens or shows the client management window.
+     */
     public void clientWindow() {
         if (this.controllerClient == null) {
             controllerClient = new ControllerClient(this);
@@ -36,6 +39,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Opens or shows the product window.
+     */
     public void productWindow() {
         if (this.controllerProduct == null) {
             controllerProduct = new ControllerProduct(this);
@@ -45,6 +51,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Opens or shows the order window.
+     */
     public void orderWindow() {
         if (this.controllerWarehouseOrder == null) {
             controllerWarehouseOrder = new ControllerWarehouseOrder(this);
@@ -54,6 +63,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Opens or shows the bill log window.
+     */
     public void billWindow() {
         if (this.controllerBill == null) {
             controllerBill = new ControllerBill(this);
@@ -63,18 +75,27 @@ public class Controller {
         }
     }
 
+    /**
+     * Refreshes the table inside the client window.
+     */
     public void notifyClientWindow() {
         if (controllerClient != null) {
             controllerClient.refreshClientTable();
         }
     }
 
+    /**
+     * Refreshes the table inside the product window.
+     */
     public void notifyProductWindow() {
         if (controllerProduct != null) {
             controllerProduct.refreshProductTable();
         }
     }
 
+    /**
+     * Refreshes the tables inside the order window.
+     */
     public void notifyOrderWindow() {
         if (controllerWarehouseOrder != null) {
             controllerWarehouseOrder.refreshClientTable();
@@ -82,6 +103,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Refreshes the table inside the bill window.
+     */
     public void notifyBillWindow() {
         if (controllerBill != null) {
             controllerBill.refreshTable();

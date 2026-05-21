@@ -123,6 +123,14 @@ public class ControllerClient {
         }
     }
 
+    /**
+     * Validates input fields and creates a Client object.
+     *
+     * @param name The client name
+     * @param email The client email
+     * @param age The client age
+     * @return A new Client object
+     */
     public Client getClientDataTextField(String name, String email, int age) throws Exception {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Please enter your name");
@@ -137,6 +145,12 @@ public class ControllerClient {
         return new Client(name, email, age);
     }
 
+    /**
+     * Extracts client details from the selected row of the UI table.
+     *
+     * @param selectedRow The index of the selected row
+     * @return A Client object with data from the table
+     */
     private Client getSelectedClientFromTable(int selectedRow) {
         int id = Integer.parseInt(this.clientGUI.getClientTable().getValueAt(selectedRow, 0).toString());
         String name = this.clientGUI.getClientTable().getValueAt(selectedRow, 1).toString();

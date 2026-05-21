@@ -124,6 +124,14 @@ public class ControllerProduct {
         }
     }
 
+    /**
+     * Validates input fields and creates a Product object.
+     *
+     * @param name The product name
+     * @param price The product price
+     * @param stock The product stock
+     * @return A new Product object
+     */
     public Product getProductDataTextField(String name, double price, int stock) throws Exception {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Please enter your name");
@@ -138,6 +146,12 @@ public class ControllerProduct {
         return new Product(name, price, stock);
     }
 
+    /**
+     * Extracts product details from the selected row of the table.
+     *
+     * @param selectedRow The index of the selected row
+     * @return A Product object with data from the table
+     */
     private Product getSelectedProductFromTable(int selectedRow) {
         int id = Integer.parseInt(this.productGUI.getProductTable().getValueAt(selectedRow, 0).toString());
         String name = this.productGUI.getProductTable().getValueAt(selectedRow, 1).toString();
