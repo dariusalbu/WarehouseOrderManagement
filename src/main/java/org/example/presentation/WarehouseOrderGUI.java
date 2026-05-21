@@ -3,6 +3,9 @@ package org.example.presentation;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
+/**
+ * GUI component for placing and managing warehouse orders.
+ */
 public class WarehouseOrderGUI extends JFrame {
     private JPanel mainPanel;
     private JTable clientTable;
