@@ -1,5 +1,8 @@
 package org.example.model;
 
+/**
+ * Data model representing a Client.
+ */
 public class Client {
     private Integer id;
     private String name;

@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * GUI component for managing Product operations.
+ */
 public class ProductGUI extends JFrame {
     private JPanel mainPanel;
     private JScrollPane ProductJScrollPane;

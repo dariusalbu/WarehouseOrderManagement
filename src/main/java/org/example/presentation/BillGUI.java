@@ -2,6 +2,9 @@ package org.example.presentation;
 
 import javax.swing.*;
 
+/**
+ * GUI component for displaying the Bills table.
+ */
 public class BillGUI extends JFrame {
     private JPanel mainPanel;
     private JTable billTable;

@@ -2,6 +2,9 @@ package org.example.model;
 
 import java.sql.Timestamp;
 
+/**
+ * Data model representing a Bill.
+ */
 public record Bill (
     int id,
     int order_id,

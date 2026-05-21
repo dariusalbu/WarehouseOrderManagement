@@ -7,6 +7,9 @@ import java.util.List;
 
 import static org.example.presentation.Controller.populateTable;
 
+/**
+ * Controller for managing Bill UI components and data.
+ */
 public class ControllerBill {
     final BillGUI billGUI;
     final BillBLL billBLL;

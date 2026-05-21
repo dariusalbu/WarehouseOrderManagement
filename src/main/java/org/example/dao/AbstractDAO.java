@@ -14,6 +14,11 @@ import java.util.stream.Collectors;
 
 import org.example.connection.ConnectionFactory;
 
+/**
+ * DAO component implementing CRUD operations using reflection.
+ *
+ * @param <T> the type of the entity managed by the DAO
+ */
 public class AbstractDAO<T> {
     protected static final Logger LOGGER = Logger.getLogger(AbstractDAO.class.getName());
 

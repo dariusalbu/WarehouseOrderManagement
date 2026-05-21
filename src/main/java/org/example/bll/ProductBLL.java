@@ -5,6 +5,9 @@ import org.example.model.Product;
 
 import java.util.List;
 
+/**
+ * BLL component for managing Product operations.
+ */
 public class ProductBLL {
     ProductDAO productDAO;
 

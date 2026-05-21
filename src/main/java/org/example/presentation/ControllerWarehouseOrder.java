@@ -15,6 +15,9 @@ import java.util.List;
 
 import static org.example.presentation.Controller.populateTable;
 
+/**
+ * Controller for managing Order UI components and operations.
+ */
 public class ControllerWarehouseOrder {
     final WarehouseOrderGUI warehouseOrderGUI;
     final WarehouseOrderBLL warehouseOrderBLL;

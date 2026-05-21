@@ -8,6 +8,9 @@ import java.util.List;
 
 import static org.example.presentation.Controller.populateTable;
 
+/**
+ * Controller for managing Product UI components and operations.
+ */
 public class ControllerProduct {
     final ProductGUI productGUI;
     final ProductBLL productBLL;

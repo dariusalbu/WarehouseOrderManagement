@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Factory component for managing database connections.
+ */
 public class ConnectionFactory {
     private static final Logger LOGGER = Logger.getLogger(ConnectionFactory.class.getName());
     private static final String DRIVER = "org.postgresql.Driver";
@@ -40,6 +43,11 @@ public class ConnectionFactory {
         return singleInstance.createConnection();
     }
 
+    /**
+     * Closes the database connection.
+     *
+     * @param connection the Connection object to close
+     */
     public static void close(Connection connection) {
         if (connection != null) {
             try {
@@ -50,6 +58,11 @@ public class ConnectionFactory {
         }
     }
 
+    /**
+     * Closes the SQL statement.
+     *
+     * @param statement the Statement object to close
+     */
     public static void close(Statement statement) {
         if (statement != null) {
             try {
@@ -60,6 +73,11 @@ public class ConnectionFactory {
         }
     }
 
+    /**
+     * Closes the database ResultSet.
+     *
+     * @param resultSet the ResultSet object to close
+     */
     public static void close(ResultSet resultSet) {
         if (resultSet != null) {
             try {

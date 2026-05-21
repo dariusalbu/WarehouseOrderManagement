@@ -3,6 +3,9 @@ package org.example.presentation;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Main graphical user interface for the application.
+ */
 public class View extends JFrame {
     private JPanel mainPanel;
     private JButton clientWindowButton;

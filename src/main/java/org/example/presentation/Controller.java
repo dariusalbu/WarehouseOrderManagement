@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
+/**
+ * Main controller for window navigation and table population.
+ */
 public class Controller {
     private final View view;
     ControllerClient controllerClient;

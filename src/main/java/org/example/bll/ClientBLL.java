@@ -5,6 +5,9 @@ import org.example.model.Client;
 
 import java.util.List;
 
+/**
+ * BLL component for managing Client operations.
+ */
 public class ClientBLL {
     ClientDAO clientDAO;
 

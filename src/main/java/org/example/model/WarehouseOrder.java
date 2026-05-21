@@ -2,6 +2,9 @@ package org.example.model;
 
 import java.sql.Timestamp;
 
+/**
+ * Data model representing a Order.
+ */
 public class WarehouseOrder {
     private int id;
     private int client_id;

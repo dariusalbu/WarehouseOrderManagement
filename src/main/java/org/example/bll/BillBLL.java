@@ -5,6 +5,9 @@ import org.example.model.Bill;
 
 import java.util.List;
 
+/**
+ * BLL component for managing Bill operations.
+ */
 public class BillBLL {
     BillDAO billDAO = new BillDAO();
 

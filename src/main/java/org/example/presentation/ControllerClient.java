@@ -8,6 +8,9 @@ import java.util.List;
 
 import static org.example.presentation.Controller.populateTable;
 
+/**
+ * Controller for managing Client UI components and operations.
+ */
 public class ControllerClient {
     final ClientGUI clientGUI;
     final ClientBLL clientBLL;
